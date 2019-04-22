@@ -12,6 +12,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,10 +42,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         list = new ArrayList<>();
 
-        list.add("Pukar");
-        list.add("Ujjwol");
-        list.add("Nilesh");
-        list.add("Gasutam");
+//        list.add("Pukar");
+//        list.add("Ujjwol");
+//        list.add("Nilesh");
+//        list.add("Gasutam");
 
 
 
@@ -58,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
         editor = preferences.edit();
 
         i = getLastLevel();
+        try {
+            getWords();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         newLetter();
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -137,5 +146,21 @@ public class MainActivity extends AppCompatActivity {
 //        String shuffledWord = new String(shuffled);
 //        return shuffledWord;
     }
+
+    private void getWords() throws IOException {
+        StringBuffer stringBuffer = new StringBuffer();
+        InputStream inputStream = this.getResources().openRawResource(R.raw.words);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        if(inputStream != null){
+            try {
+                while ((charString = bufferedReader.readLine()) != null) {
+                    list.add(charString);
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+            }
+        }
+
 }
 
