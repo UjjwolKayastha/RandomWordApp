@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     TextView txt;
     Button btn;
     EditText et;
-    int i=0;
+    int i;
     ListView listview;
 
     String ans = "";
@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         list.add("Nilesh");
         list.add("Gasutam");
 
+
+
         txt = findViewById(R.id.txt);
         btn = findViewById(R.id.btn);
         et = findViewById(R.id.et);
@@ -50,10 +52,13 @@ public class MainActivity extends AppCompatActivity {
 
         listview = findViewById(R.id.listview);
 
-        newLetter();
+
 
         preferences = getSharedPreferences("pref", MODE_PRIVATE);
         editor = preferences.edit();
+
+        i = getLastLevel();
+        newLetter();
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,21 +75,23 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "CORRECT ANSWER", Toast.LENGTH_SHORT).show();
 
                         editor.putInt("level", i).commit();
-
                     }
                     else {
                         et.setText("Wrong Word");
                         et.setText("");
                         ans="";
                         Toast.makeText(MainActivity.this, "WRONG ANSWER. TRY AGAIN!!", Toast.LENGTH_SHORT).show();
-
-
                     }
 
                 }
 
             }
         });
+    }
+
+    public int getLastLevel(){
+        int level = preferences.getInt("level", 0);
+        return level;
     }
 
     public void newLetter(){
